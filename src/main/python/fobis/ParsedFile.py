@@ -354,10 +354,14 @@ class ParsedFile(object):
           source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT, encoding='UTF-8'))
           source = source.replace('\\n', '\n')
         else:
-          source = str(openReader(self.name).read())
+          f = openReader(self.name)
+          source = str(f.read())
+          f.close()
 
       else:
-        source = str(openReader(self.name).read())
+        f = openReader(self.name)
+        source = str(f.read())
+        f.close()
 
       self.doctest.parse(source=source)
       self.doctest.make_volatile_programs()
