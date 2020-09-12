@@ -351,7 +351,11 @@ class ParsedFile(object):
             preprocessor += ' -C -w '
           elif preprocessor == 'fpp':
             preprocessor += ' -w '
-          source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT, encoding='UTF-8'))
+          source = ''
+          if (sys.version_info > (3, 0)):
+            source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT, encoding='UTF-8'))
+          else:
+            source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT))
           source = source.replace('\\n', '\n')
         else:
           f = openReader(self.name)

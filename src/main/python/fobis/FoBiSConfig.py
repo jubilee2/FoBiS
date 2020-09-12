@@ -167,6 +167,8 @@ class FoBiSConfig(object):
       f.close()
       comparison = md5sum == md5sum_old
     with open(hashfile, 'w') as md5:
+      if hasattr(md5sum, 'decode'):
+        md5sum = md5sum.decode('utf-8')
       md5.writelines(md5sum)
     return hashexist, comparison
 
