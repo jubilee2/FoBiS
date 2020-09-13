@@ -15,9 +15,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [2.7, 3.8]
+        os: [macos-latest]
         # os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [2.7, 3.8]
         # python-version: [2.7, 3.6, 3.7, 3.8]
 
     steps:
@@ -51,10 +51,18 @@ jobs:
         pip list
         FoBiS.py -v
         FoBiS.py -h
-    - name: Unit test
+    - name: Unit test on Linux
       if: startsWith(runner.os, 'Linux')
+      run: |
+        pip install PreForM.py
+        cd src/unittest/python
+        ./suite_tests.py
+    - name: Unit test on macOS
+      if: startsWith(runner.os, 'macOS')
       continue-on-error: true
       run: |
+        ln -s /usr/local/bin/gfortran-9 /usr/local/bin/gfortran
+        which gfortran
         pip install PreForM.py
         cd src/unittest/python
         ./suite_tests.py
