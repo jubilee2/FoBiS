@@ -54,8 +54,8 @@ jobs:
     - name: Prepare GFortran macOS
       if: startsWith(runner.os, 'macOS')
       run: |
-          ln -s /usr/local/bin/gfortran-${GCC_V} /usr/local/bin/gfortran
-          which gfortran-${GCC_V}
+          ln -s /usr/local/bin/gfortran-9 /usr/local/bin/gfortran
+          which gfortran-9
           which gfortran
     - name: Unit test on Linux/macOS
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
