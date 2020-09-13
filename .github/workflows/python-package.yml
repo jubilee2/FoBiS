@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
         # os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [2.7, 3.8]
         # python-version: [2.7, 3.6, 3.7, 3.8]
@@ -57,9 +57,14 @@ jobs:
           ln -s /usr/local/bin/gfortran-9 /usr/local/bin/gfortran
           which gfortran-9
           which gfortran
-    - name: Unit test on Linux/macOS
-      if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
+    - name: Unit test on macOS
+      if: startsWith(runner.os, 'macOS')
       continue-on-error: true
+      run: |
+        cd src/unittest/python
+        ./suite_tests.py
+    - name: Unit test on Linux
+      if: startsWith(runner.os, 'Linux') 
       run: |
         cd src/unittest/python
         ./suite_tests.py
