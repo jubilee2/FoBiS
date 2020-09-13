@@ -28,7 +28,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install pybuilder
+        pip install pybuilder PreForM.py
     - name: Test build package
       run: |
         pyb
@@ -51,18 +51,15 @@ jobs:
         pip list
         FoBiS.py -v
         FoBiS.py -h
-    - name: Unit test on Linux
-      if: startsWith(runner.os, 'Linux')
-      run: |
-        pip install PreForM.py
-        cd src/unittest/python
-        ./suite_tests.py
-    - name: Unit test on macOS
+    - name: Prepare GFortran macOS
       if: startsWith(runner.os, 'macOS')
+      run: |
+          ln -s /usr/local/bin/gfortran-${GCC_V} /usr/local/bin/gfortran
+          which gfortran-${GCC_V}
+          which gfortran
+    - name: Unit test on Linux/macOS
+      if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       continue-on-error: true
       run: |
-        ln -s /usr/local/bin/gfortran-9 /usr/local/bin/gfortran
-        which gfortran
-        pip install PreForM.py
         cd src/unittest/python
         ./suite_tests.py
