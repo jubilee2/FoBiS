@@ -26,7 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install pybuilder PreForM.py
+        pip install pybuilder PreForM.py==1.1.2
     - name: Test build package
       run: |
         pyb
