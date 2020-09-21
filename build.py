@@ -42,6 +42,8 @@ def initialize(project):
   # project.set_property("teamcity_output", True)
 
   project.set_property('flake8_max_line_length', 500)
+  project.set_property('flake8_ignore', 'E111,E114,E261,E402,W504')
+
   project.set_property('verbose', True)
 
   project.set_property('coverage_break_build', False)

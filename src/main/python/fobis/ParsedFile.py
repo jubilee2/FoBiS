@@ -351,13 +351,21 @@ class ParsedFile(object):
             preprocessor += ' -C -w '
           elif preprocessor == 'fpp':
             preprocessor += ' -w '
-          source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT, encoding='UTF-8'))
+          source = ''
+          if (sys.version_info > (3, 0)):
+            source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT, encoding='UTF-8'))
+          else:
+            source = str(check_output(preprocessor + self.name, shell=True, stderr=STDOUT))
           source = source.replace('\\n', '\n')
         else:
-          source = str(openReader(self.name).read())
+          f = openReader(self.name)
+          source = str(f.read())
+          f.close()
 
       else:
-        source = str(openReader(self.name).read())
+        f = openReader(self.name)
+        source = str(f.read())
+        f.close()
 
       self.doctest.parse(source=source)
       self.doctest.make_volatile_programs()

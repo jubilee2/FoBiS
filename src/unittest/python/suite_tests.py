@@ -35,8 +35,6 @@ class SuiteTest(unittest.TestCase):
     old_pwd = os.getcwd()
     os.chdir(os.path.dirname(os.path.abspath(__file__)) + '/' + directory)
 
-    run_fobis(fake_args=['clean', '-f', 'fobos'])
-
     try:
       run_fobis(fake_args=['build', '-f', 'fobos'])
       build_ok = os.path.exists(directory)

@@ -115,7 +115,9 @@ class FoBiSConfig(object):
         else:
           her_file = os.path.join(self.cliargs.build_dir, '.cflags.heritage')
         if os.path.exists(her_file):
-          cflags_old = open(her_file).read()
+          f = open(her_file)
+          cflags_old = f.read()
+          f.close()
           if cflags != cflags_old:
             self.cliargs.force_compile = True
             self.print_r("The present cflags are different from the heritages one: forcing to (re-)compile all")
@@ -154,13 +156,19 @@ class FoBiSConfig(object):
     -------
     2 bools containing the previously existance of the hashfile and the result of hashes comparison
     """
-    md5sum = hashlib.md5(open(filename, 'rb').read()).hexdigest()
+    f = open(filename, 'rb')
+    md5sum = hashlib.md5(f.read()).hexdigest()
+    f.close()
     hashexist = os.path.exists(hashfile)
     comparison = False
     if hashexist:
-      md5sum_old = open(hashfile).read()
+      f = open(hashfile)
+      md5sum_old = f.read()
+      f.close()
       comparison = md5sum == md5sum_old
     with open(hashfile, 'w') as md5:
+      if hasattr(md5sum, 'decode'):
+        md5sum = md5sum.decode('utf-8')
       md5.writelines(md5sum)
     return hashexist, comparison
 
